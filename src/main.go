@@ -1,6 +1,7 @@
 package main
 
 import (
+	"discord_starbot/commands"
 	"log"
 	"os"
 
@@ -23,7 +24,7 @@ func main() {
 		log.Fatal("Error creating Discord session", err)
 	}
 
-	_ = discord
+	discord.AddHandler(commands.HandleMessage)
 
 	err = discord.Open()
 	if err != nil {
