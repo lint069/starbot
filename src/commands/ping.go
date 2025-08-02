@@ -1,32 +1,26 @@
 package commands
 
 import (
-	"discord_starbot/config"
+	"discord_starbot/permissions"
 	"fmt"
-	"strings"
 
 	"github.com/bwmarrin/discordgo"
 )
 
-func HandleMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
-	if m.Author.Bot {
+func Ping(s *discordgo.Session, m *discordgo.MessageCreate) {
+
+	userPermissions, err := s.UserChannelPermissions(m.Author.ID, m.ChannelID)
+	if err != nil {
 		return
 	}
 
-	if !strings.HasPrefix(m.Content, config.BotPrefix) {
+	// Example of using permissions limitation
+	hasPermissions := userPermissions&permissions.Administrator != 0
+	if !hasPermissions {
+		s.ChannelMessageSend(m.ChannelID, "You can't use this command, required permission: `Administrator`")
 		return
 	}
 
-	args := strings.Fields(m.Content[len(config.BotPrefix):])
-	if len(args) == 0 {
-		return
-	}
-
-	command := strings.ToLower(args[0])
 	latency := s.HeartbeatLatency()
-
-	switch command {
-	case "ping":
-		s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("Pong! `%dms`", latency.Milliseconds()))
-	}
+	s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("Pong! `%dms`", latency.Milliseconds()))
 }
