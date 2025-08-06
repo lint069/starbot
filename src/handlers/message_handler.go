@@ -8,7 +8,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-func HandleMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
+func MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Author.Bot {
 		return
 	}
@@ -24,8 +24,7 @@ func HandleMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	command := strings.ToLower(args[0])
 
-	switch command {
-	case "ping":
-		commands.Ping(s, m)
+	if cmdFunc, ok := commands.CommandMap[command]; ok {
+		cmdFunc(s, m)
 	}
 }
