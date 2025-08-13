@@ -10,6 +10,22 @@ import (
 	"github.com/joho/godotenv"
 )
 
+func setStatus(s *discordgo.Session) {
+	err := s.UpdateStatusComplex(discordgo.UpdateStatusData{
+		Activities: []*discordgo.Activity{
+			{
+				Name: "the stars",
+				Type: discordgo.ActivityTypeWatching,
+			},
+		},
+		Status: "idle",
+		AFK:    true,
+	})
+	if err != nil {
+		log.Println("error updating status:", err)
+	}
+}
+
 func init() {
 	err := godotenv.Load()
 	if err != nil {
@@ -28,6 +44,10 @@ func main() {
 	commands.InitCommands(discord)
 	discord.AddHandler(handlers.MessageHandler)
 	discord.AddHandler(handlers.SlashCommandHandler)
+
+	discord.AddHandler(func(s *discordgo.Session, r *discordgo.Ready) {
+		setStatus(s)
+	})
 
 	err = discord.Open()
 	if err != nil {

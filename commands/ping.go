@@ -18,5 +18,5 @@ func Ping(s *discordgo.Session, m *discordgo.MessageCreate) {
 	t := time.Now()
 	elapsed := t.Sub(start)
 
-	s.ChannelMessageEdit(m.ChannelID, msg.ID, fmt.Sprintf("Pong! `%dms`", elapsed))
+	s.ChannelMessageEdit(m.ChannelID, msg.ID, fmt.Sprintf("Pong! `%dms`", elapsed.Milliseconds()))
 }
