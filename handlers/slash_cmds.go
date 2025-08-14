@@ -8,7 +8,7 @@ import (
 
 func SlashCommandHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	switch i.ApplicationCommandData().Name {
-	case "create-starboard-channel":
-		commands.CreateChannelCommandHandler(s, i)
+	case "setup":
+		commands.HandleSetupCommand(s, i)
 	}
 }
