@@ -1,0 +1,5 @@
+#!bin/bash
+
+APP_TOKEN="<your bot token>"
+APP_ID="<your application id>"
+PREFIX="$"
