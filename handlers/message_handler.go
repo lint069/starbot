@@ -2,22 +2,24 @@ package handlers
 
 import (
 	"discord_starbot/commands"
-	"discord_starbot/config"
+	"os"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
 )
 
 func MessageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
+	prefix := os.Getenv("PREFIX")
+
 	if m.Author.Bot {
 		return
 	}
 
-	if !strings.HasPrefix(m.Content, config.BotPrefix) {
+	if !strings.HasPrefix(m.Content, prefix) {
 		return
 	}
 
-	args := strings.Fields(m.Content[len(config.BotPrefix):])
+	args := strings.Fields(m.Content[len(prefix):])
 	if len(args) == 0 {
 		return
 	}

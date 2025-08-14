@@ -34,7 +34,7 @@ func init() {
 }
 
 func main() {
-	token := os.Getenv("BOT_TOKEN")
+	token := os.Getenv("APP_TOKEN")
 	discord, err := discordgo.New("Bot " + token)
 
 	if err != nil {
